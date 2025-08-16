@@ -1,0 +1,254 @@
+{
+  "name": "LEO Lead Processing",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "lead-processing",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Incoming Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "leo-lead-processing"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Lead Qualification Logic\nconst leadData = items[0].json;\n\n// Calculate lead score based on multiple factors\nlet score = 0;\n\n// Income qualification (30 points max)\nif (leadData.monthlyIncome) {\n  const incomeToRentRatio = leadData.monthlyIncome / (leadData.desiredRent || 1000);\n  if (incomeToRentRatio >= 3) score += 30;\n  else if (incomeToRentRatio >= 2.5) score += 20;\n  else if (incomeToRentRatio >= 2) score += 10;\n}\n\n// Timeline urgency (25 points max)\nif (leadData.moveInDate) {\n  const moveInDate = new Date(leadData.moveInDate);\n  const today = new Date();\n  const daysUntilMoveIn = Math.ceil((moveInDate - today) / (1000 * 60 * 60 * 24));\n  \n  if (daysUntilMoveIn <= 30) score += 25;\n  else if (daysUntilMoveIn <= 60) score += 20;\n  else if (daysUntilMoveIn <= 90) score += 15;\n  else score += 10;\n}\n\n// Contact quality (20 points max)\nif (leadData.phoneNumber && leadData.email) score += 20;\nelse if (leadData.phoneNumber || leadData.email) score += 10;\n\n// Specific property interest (15 points max)\nif (leadData.propertyId) score += 15;\nelse if (leadData.propertyType) score += 10;\nelse score += 5;\n\n// Previous rental history (10 points max)\nif (leadData.currentlyRenting === true) score += 10;\nelse if (leadData.currentlyRenting === false) score += 5;\n\n// Determine lead quality\nlet quality = 'low';\nif (score >= 80) quality = 'hot';\nelse if (score >= 60) quality = 'warm';\nelse if (score >= 40) quality = 'medium';\n\n// Enhanced lead data\nconst enhancedLead = {\n  ...leadData,\n  leadScore: score,\n  leadQuality: quality,\n  processedAt: new Date().toISOString(),\n  source: 'leo-voice-agent',\n  needsImmediateFollowup: score >= 70,\n  suggestedActions: []\n};\n\n// Add suggested actions based on score\nif (score >= 80) {\n  enhancedLead.suggestedActions.push('immediate_call', 'priority_showing');\n} else if (score >= 60) {\n  enhancedLead.suggestedActions.push('same_day_call', 'schedule_showing');\n} else if (score >= 40) {\n  enhancedLead.suggestedActions.push('next_business_day_call', 'send_info_packet');\n} else {\n  enhancedLead.suggestedActions.push('email_nurture_sequence');\n}\n\nreturn [{ json: enhancedLead }];"
+      },
+      "id": "lead-qualification",
+      "name": "Lead Qualification",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.leadQuality }}",
+              "rightValue": "hot",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "quality-router",
+      "name": "Route by Quality",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "resource": "contact",
+        "operation": "upsert",
+        "externalId": "={{ $json.email }}",
+        "externalIdField": "Email",
+        "properties": {
+          "FirstName": "={{ $json.firstName }}",
+          "LastName": "={{ $json.lastName }}",
+          "Email": "={{ $json.email }}",
+          "Phone": "={{ $json.phoneNumber }}",
+          "LeadSource": "LEO Voice Agent",
+          "LeadScore": "={{ $json.leadScore }}",
+          "LeadQuality": "={{ $json.leadQuality }}",
+          "DesiredMoveInDate": "={{ $json.moveInDate }}",
+          "MonthlyIncome": "={{ $json.monthlyIncome }}",
+          "DesiredRent": "={{ $json.desiredRent }}",
+          "PropertyType": "={{ $json.propertyType }}",
+          "Notes": "Lead from LEO voice agent conversation. Score: {{ $json.leadScore }}/100"
+        },
+        "options": {}
+      },
+      "id": "crm-upsert",
+      "name": "Update CRM Contact",
+      "type": "n8n-nodes-base.salesforce",
+      "typeVersion": 1,
+      "position": [900, 180],
+      "credentials": {
+        "salesforceOAuth2Api": {
+          "id": "salesforce-credentials",
+          "name": "Salesforce Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@your-property-management.com",
+        "toEmail": "={{ $json.email }}",
+        "subject": "Thank you for your interest in our properties!",
+        "text": "Hi {{ $json.firstName }},\n\nThank you for speaking with LEO about our available properties. We're excited to help you find your perfect home!\n\nBased on our conversation, I understand you're looking for:\n- {{ $json.propertyType || 'Property information' }}\n- Move-in date: {{ $json.moveInDate || 'To be determined' }}\n- Budget range: ${{ $json.desiredRent || 'To be discussed' }}/month\n\nOne of our property specialists will contact you within the next business day to discuss available options and schedule a showing.\n\nIn the meantime, you can browse our current listings at: www.your-property-management.com\n\nBest regards,\nThe Property Management Team\n\nP.S. - If you have any urgent questions, feel free to call us at (555) 123-4567",
+        "html": "<html><body><h2>Thank you for your interest!</h2><p>Hi {{ $json.firstName }},</p><p>Thank you for speaking with LEO about our available properties. We're excited to help you find your perfect home!</p><h3>Your Requirements:</h3><ul><li>Property type: {{ $json.propertyType || 'To be discussed' }}</li><li>Move-in date: {{ $json.moveInDate || 'To be determined' }}</li><li>Budget: ${{ $json.desiredRent || 'To be discussed' }}/month</li></ul><p>One of our property specialists will contact you within the next business day.</p><p><a href='https://www.your-property-management.com' style='background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Browse Available Properties</a></p><p>Best regards,<br>The Property Management Team</p></body></html>",
+        "options": {}
+      },
+      "id": "confirmation-email",
+      "name": "Send Confirmation Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "credentials": {
+        "smtp": {
+          "id": "email-smtp",
+          "name": "Email SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "alerts@your-property-management.com",
+        "toEmail": "leasing-team@your-property-management.com",
+        "subject": "🔥 HOT LEAD: Immediate Follow-up Required",
+        "text": "HIGH PRIORITY LEAD ALERT\n\n{{ $json.firstName }} {{ $json.lastName }} just spoke with LEO and scored {{ $json.leadScore }}/100 points!\n\nContact Details:\n- Email: {{ $json.email }}\n- Phone: {{ $json.phoneNumber }}\n- Move-in date: {{ $json.moveInDate }}\n- Budget: ${{ $json.desiredRent }}/month\n- Income: ${{ $json.monthlyIncome }}/month\n\nRecommended Actions: {{ $json.suggestedActions.join(', ') }}\n\nThis lead should be contacted within 1 hour for best conversion rates.\n\nCRM Link: [Link to contact record]\n\nLEO Conversation Summary: {{ $json.conversationSummary || 'See call logs for details' }}",
+        "options": {}
+      },
+      "id": "hot-lead-alert",
+      "name": "Hot Lead Alert",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1120, 120],
+      "credentials": {
+        "smtp": {
+          "id": "email-smtp",
+          "name": "Email SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": "nurture-sequence",
+        "source": "database"
+      },
+      "id": "trigger-nurture",
+      "name": "Trigger Nurture Sequence",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [1120, 420]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log successful processing\nconst leadData = items[0].json;\n\nconst logEntry = {\n  timestamp: new Date().toISOString(),\n  leadId: leadData.email,\n  leadScore: leadData.leadScore,\n  leadQuality: leadData.leadQuality,\n  processingStatus: 'success',\n  actionsTriggered: leadData.suggestedActions,\n  source: 'leo-voice-agent'\n};\n\nconsole.log('Lead processed successfully:', JSON.stringify(logEntry, null, 2));\n\nreturn [{ json: { success: true, leadData: leadData, log: logEntry } }];"
+      },
+      "id": "success-logger",
+      "name": "Log Success",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "webhook-trigger": {
+      "main": [
+        [
+          {
+            "node": "lead-qualification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lead-qualification": {
+      "main": [
+        [
+          {
+            "node": "quality-router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "quality-router": {
+      "main": [
+        [
+          {
+            "node": "hot-lead-alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "crm-upsert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "confirmation-email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "crm-upsert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "confirmation-email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "trigger-nurture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "crm-upsert": {
+      "main": [
+        [
+          {
+            "node": "success-logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "confirmation-email": {
+      "main": [
+        [
+          {
+            "node": "success-logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1.0.0",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "id": "leo-lead-processing",
+  "tags": [
+    {
+      "id": "lead-processing",
+      "name": "Lead Processing"
+    },
+    {
+      "id": "leo-voice-agent",
+      "name": "LEO Voice Agent"
+    }
+  ]
+}
