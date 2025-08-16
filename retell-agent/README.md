@@ -39,6 +39,12 @@ LEO is designed to handle property management inquiries, tenant screening, maint
 - **Usage**: Example knowledge base for Lakeside Apartments property
 - **Format**: Voice-optimized markdown with chunking guidance
 
+ #### `LVA - Lakeside.rtf`
+- **Purpose**: Rich text format version of knowledge base
+- **Contains**: Formatted version of knowledge base
+- **Usage**: Converted from markdown version for import into Retell
+- **Format**: Rich Text Format (RTF)
+
 #### `Knowledge Base Template.md`
 - **Purpose**: Standardized template for creating property knowledge bases
 - **Contains**: 
@@ -60,12 +66,6 @@ LEO is designed to handle property management inquiries, tenant screening, maint
   - Testing and update procedures
 - **Usage**: Reference guide for knowledge base preparation
 - **Format**: Best practices summary with quick reference table
-
-#### `LVA - Lakeside.rtf`
-- **Purpose**: Rich text format version of agent configuration
-- **Contains**: Formatted version of agent setup and configuration
-- **Usage**: Alternative format for documentation and sharing
-- **Format**: Rich Text Format (RTF)
 
 ### Configuration Files
 
