@@ -1,0 +1,164 @@
+{
+  "property_management": {
+    "leasing_procedures": {
+      "application_process": [
+        "Complete rental application online or in-person",
+        "Provide government-issued photo ID",
+        "Submit proof of income (pay stubs, bank statements, employment letter)",
+        "Provide contact information for previous landlords and personal references",
+        "Pay application fee (typically $50-$100, varies by location)",
+        "Credit and background check will be conducted",
+        "Application review typically takes 24-48 hours"
+      ],
+      "qualification_requirements": [
+        "Monthly income should be 3x the monthly rent",
+        "Credit score minimum of 650 (varies by property)",
+        "No recent evictions (within past 3 years)",
+        "Positive rental history and references",
+        "Stable employment history",
+        "Maximum debt-to-income ratio of 40%"
+      ],
+      "security_deposits": [
+        "Typically 1-2 months rent as security deposit",
+        "Additional pet deposit if pets are allowed",
+        "Security deposit is refundable upon lease end (minus any damages)",
+        "Move-in inspection conducted to document property condition",
+        "Deposit return processed within 30 days after move-out"
+      ],
+      "lease_terms": [
+        "Standard lease terms: 6 months, 12 months, 24 months",
+        "Month-to-month options may be available at premium rate",
+        "Lease includes rent amount, due date, late fees, and property rules",
+        "Rent increases require 60-day notice (varies by local law)",
+        "Early termination may be possible with penalty fee"
+      ]
+    },
+    
+    "maintenance_protocols": {
+      "emergency_maintenance": [
+        "Available 24/7 for true emergencies",
+        "Emergencies include: flooding, fire, gas leaks, no heat in winter, no AC in extreme heat, security issues",
+        "Response time: Within 2 hours for emergencies",
+        "Contact emergency hotline for immediate assistance",
+        "Document issue with photos if safe to do so"
+      ],
+      "standard_maintenance": [
+        "Submit requests through tenant portal, email, or phone",
+        "Response time: 24-48 hours for standard issues",
+        "Include detailed description and photos when possible",
+        "Schedule access with 24-hour notice to tenant",
+        "Follow-up to ensure issue is resolved satisfactorily"
+      ],
+      "tenant_responsibilities": [
+        "Keep unit clean and in good condition",
+        "Report maintenance issues promptly",
+        "Provide access for repairs during reasonable hours",
+        "Replace light bulbs, batteries in smoke detectors",
+        "Basic cleaning of appliances and fixtures",
+        "Proper use of all systems and appliances"
+      ],
+      "seasonal_maintenance": [
+        "HVAC filter changes every 3 months",
+        "Heating system inspection before winter",
+        "Air conditioning check before summer",
+        "Gutter cleaning and roof inspection annually",
+        "Landscaping and exterior maintenance as needed"
+      ]
+    },
+    
+    "policies_and_procedures": {
+      "pet_policy": [
+        "Pets allowed with approval and additional deposit",
+        "Pet deposit: $300-$500 per pet (refundable)",
+        "Monthly pet rent: $25-$50 per pet",
+        "Maximum 2 pets per unit",
+        "Weight restrictions: Dogs under 50 lbs",
+        "Breed restrictions apply (no aggressive breeds)",
+        "Current vaccination records required",
+        "Pet registration and photo required"
+      ],
+      "guest_policy": [
+        "Overnight guests welcome for up to 14 consecutive days",
+        "Guests staying longer must be added to lease",
+        "Tenant responsible for guest behavior and any damages",
+        "Notify management of extended guest stays",
+        "All lease terms apply to guests"
+      ],
+      "parking_policy": [
+        "Assigned parking spaces included with rent",
+        "Additional parking spaces available for monthly fee",
+        "Guest parking available in designated areas",
+        "No overnight parking in guest spots",
+        "Vehicle registration required",
+        "Towing enforced for unauthorized parking"
+      ],
+      "noise_policy": [
+        "Quiet hours: 10 PM to 8 AM on weekdays, 11 PM to 9 AM on weekends",
+        "Reasonable noise levels expected at all times",
+        "No loud music, parties, or disruptive activities",
+        "Hardwood floors require area rugs in bedrooms and living areas",
+        "First complaint results in warning, repeated violations may result in lease termination"
+      ]
+    },
+    
+    "rent_and_payments": {
+      "payment_methods": [
+        "Online payment through tenant portal (preferred)",
+        "Automatic bank transfer (ACH)",
+        "Credit/debit card (processing fee may apply)",
+        "Check or money order delivered to office",
+        "Cash payments accepted at office during business hours"
+      ],
+      "payment_schedule": [
+        "Rent due on the 1st of each month",
+        "Grace period: 5 days (rent considered late after 5th)",
+        "Late fee: $50-$100 or 5% of rent (varies by lease)",
+        "Returned payment fee: $35",
+        "Partial payments may not be accepted without prior arrangement"
+      ],
+      "rent_increases": [
+        "Annual rent increases typically 3-5%",
+        "60-day written notice required for increases",
+        "Market rate adjustments based on local conditions",
+        "Lease renewal negotiations available",
+        "Rent control laws vary by location"
+      ]
+    }
+  },
+  
+  "frequently_asked_questions": {
+    "application_faqs": {
+      "How long does the application process take?": "Typically 24-48 hours once we receive your complete application and all required documents.",
+      "What credit score do I need?": "Generally, we look for a credit score of 650 or higher, though we consider the complete financial picture.",
+      "Can I apply with a co-signer?": "Yes, co-signers are accepted and can help strengthen your application if needed.",
+      "Is the application fee refundable?": "Application fees are non-refundable and cover the cost of credit and background checks."
+    },
+    "lease_faqs": {
+      "Can I break my lease early?": "Early termination may be possible with proper notice and payment of applicable fees as outlined in your lease agreement.",
+      "What happens if I'm late with rent?": "Late fees apply after the grace period. Consistent late payments may result in lease termination proceedings.",
+      "Can I sublet my apartment?": "Subletting requires written approval from management and must follow all lease terms and local laws.",
+      "How much notice do I need to give before moving out?": "Typically 30-60 days written notice is required, as specified in your lease agreement."
+    },
+    "maintenance_faqs": {
+      "What constitutes a maintenance emergency?": "Emergencies include flooding, gas leaks, fire, complete loss of heat/AC in extreme weather, and security issues.",
+      "How do I submit a maintenance request?": "Use the online tenant portal, call our maintenance line, or email us with a detailed description of the issue.",
+      "Will I be charged for maintenance requests?": "Standard maintenance and repairs are covered. Charges may apply for damages caused by tenant negligence.",
+      "How quickly will maintenance issues be addressed?": "Emergencies within 2 hours, urgent issues within 24 hours, standard requests within 48 hours."
+    }
+  },
+  
+  "local_information": {
+    "office_hours": {
+      "monday_friday": "9:00 AM - 6:00 PM",
+      "saturday": "10:00 AM - 4:00 PM",
+      "sunday": "Closed",
+      "emergency_contact": "24/7 emergency maintenance hotline available"
+    },
+    "contact_information": {
+      "main_office": "(555) 123-4567",
+      "emergency_maintenance": "(555) 123-HELP",
+      "email": "info@your-property-management.com",
+      "website": "www.your-property-management.com"
+    }
+  }
+}
