@@ -10,6 +10,9 @@
 -  throw new Error(
 -    'Missing Supabase environment variables. Please check your .env file and ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.'
 -  );
+  console.warn(
+    'Missing Supabase environment variables. Please check your .env file and ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.'
+  );
 -}
 +if (!supabaseUrl || !supabaseAnonKey) {
 +  console.warn(
@@ -19,6 +22,10 @@
 
  // Initialize Supabase client with authentication configuration
 -export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseAnonKey || 'placeholder-anon-key', 
+  {
 +export const supabase = createClient(
 +  supabaseUrl || 'https://placeholder.supabase.co', 
 +  supabaseAnonKey || 'placeholder-key', 
