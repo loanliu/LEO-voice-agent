@@ -100,7 +100,7 @@ const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose }) => {
     setErrors({});
 
     try {
-      const response = await fetch('https://hook.eu2.make.com/lnl2yh8c1jqg1ssgmlzdy46jsj73gkp3', {
+      const response = await fetch('https://loanliu.app.n8n.cloud/webhook/91dceda8-c6e5-4fb7-b3f2-829a8b8fd387', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

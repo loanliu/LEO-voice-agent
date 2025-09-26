@@ -6,7 +6,11 @@ import LaurelRight from '../assets/Laurel_right.png';
 import SpeechBubble from '../assets/Speech_bubble.png';
 // import { openVoiceChat } from '../lib/chatWidget';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onStartVoiceDemo?: () => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onStartVoiceDemo }) => {
 
   return (
     <section className="pt-12 pb-20 px-4 sm:px-6 lg:px-8">
@@ -26,7 +30,7 @@ const Hero: React.FC = () => {
               </p>
 
               <div className="space-y-4 flex flex-col items-center">
-                <button onClick={() => alert('Chat widget temporarily disabled')} className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg inline-flex items-center space-x-2 group">
+                <button onClick={onStartVoiceDemo || (() => alert('Voice demo not available'))} className="bg-[#F7EF00] text-[#1E293B] px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-[#F7EF00]/90 transition-all duration-300 hover:scale-105 hover:shadow-lg inline-flex items-center space-x-2 group">
                   <span>Let Leo take your next call</span>
                   <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </button>
