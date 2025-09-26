@@ -4,7 +4,11 @@ import { Phone } from 'lucide-react';
 // import { openVoiceChat } from '../lib/chatWidget';
 import LeoLogo from '../assets/Leo_logo_round.png';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onStartVoiceDemo?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onStartVoiceDemo }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -58,7 +62,7 @@ const Header: React.FC = () => {
           </nav>
 
           <button
-            onClick={() => alert('Chat widget temporarily disabled')}
+            onClick={onStartVoiceDemo || (() => alert('Voice demo not available'))}
             className="bg-[#F7EF00] text-[#1E293B] px-6 py-2 rounded-full font-semibold hover:bg-[#F7EF00]/90 transition-all duration-200 hover:scale-105 flex items-center space-x-2"
           >
             <Phone className="w-4 h-4" />
