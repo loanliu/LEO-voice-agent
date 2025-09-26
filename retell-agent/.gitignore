@@ -1,0 +1,20 @@
+# Sensitive configuration files
+api-keys.json
+secrets.json
+*.env
+
+# Backup files
+*.backup
+*.bak
+
+# Temporary files
+*.tmp
+*.temp
+
+# Logs
+*.log
+logs/
+
+# Testing outputs
+test-results/
+coverage/

@@ -1,0 +1,160 @@
+# Meeting Notes
+
+Store written meeting notes and summaries here.
+
+## Purpose
+
+This folder contains:
+- Meeting minutes and summaries
+- Decision records
+- Action item tracking
+- Follow-up documentation
+- Stakeholder communications
+
+## File Naming Convention
+
+```
+YYYY-MM-DD-meeting-type.md
+
+Examples:
+2024-08-16-stakeholder-meeting.md
+2024-08-20-technical-review.md
+2024-08-25-sprint-planning.md
+2024-08-30-investor-update.md
+```
+
+## Meeting Notes Template
+
+```markdown
+# Meeting Notes: [Topic] - [Date]
+
+## Meeting Information
+- **Date**: YYYY-MM-DD
+- **Time**: HH:MM - HH:MM [Timezone]
+- **Type**: Stakeholder/Technical/Planning/Review
+- **Location**: In-person/Virtual/Hybrid
+
+## Attendees
+- **Present**: 
+  - Name 1 (Role)
+  - Name 2 (Role)
+  - Name 3 (Role)
+- **Absent**:
+  - Name 4 (Role) - Reason
+
+## Agenda
+1. Topic 1
+2. Topic 2
+3. Topic 3
+4. Action Items Review
+5. Next Steps
+
+## Discussion Summary
+
+### Topic 1: [Title]
+**Presenter**: Name
+**Duration**: X minutes
+
+- Key points discussed
+- Decisions made
+- Questions raised
+- Concerns identified
+
+### Topic 2: [Title]
+**Presenter**: Name
+**Duration**: X minutes
+
+- Key points discussed
+- Decisions made
+- Questions raised
+- Concerns identified
+
+## Decisions Made
+1. **Decision**: Description
+   - **Rationale**: Why this decision was made
+   - **Impact**: Who/what is affected
+   - **Timeline**: When to implement
+
+2. **Decision**: Description
+   - **Rationale**: Why this decision was made
+   - **Impact**: Who/what is affected
+   - **Timeline**: When to implement
+
+## Action Items
+- [ ] **Action 1** - Assignee: @username - Due: YYYY-MM-DD
+- [ ] **Action 2** - Assignee: @username - Due: YYYY-MM-DD
+- [ ] **Action 3** - Assignee: @username - Due: YYYY-MM-DD
+
+## Parking Lot
+- Issues to be addressed in future meetings
+- Questions that need research
+- Ideas for future consideration
+
+## Next Meeting
+- **Date**: YYYY-MM-DD
+- **Agenda Preview**: Main topics for next meeting
+- **Preparation Needed**: What attendees should prepare
+
+## Resources and Links
+- [Link to presentation slides]
+- [Link to shared documents]
+- [Link to recording (if available)]
+- [Related project issues or tickets]
+
+---
+
+**Meeting Notes prepared by**: [Name]
+**Reviewed by**: [Name]
+**Distribution**: [List of who should receive these notes]
+```
+
+## Meeting Types
+
+### Stakeholder Meetings
+- Executive updates
+- Investor communications
+- Board meetings
+- Client/customer meetings
+
+### Technical Meetings
+- Architecture reviews
+- Code reviews
+- Technical planning
+- Problem-solving sessions
+
+### Project Management
+- Sprint planning
+- Sprint reviews
+- Retrospectives
+- Daily standups (summary notes)
+
+### Strategic Planning
+- Product roadmap planning
+- Business strategy sessions
+- Market analysis discussions
+- Competitive analysis
+
+## Best Practices
+
+### During the Meeting
+- Take notes in real-time
+- Capture decisions and rationale
+- Record action items with assignees
+- Note parking lot items
+- Ask for clarification when needed
+
+### After the Meeting
+- Review and clean up notes within 24 hours
+- Send to all attendees for review
+- Update project tracking systems
+- Schedule follow-up meetings if needed
+
+### Follow-up
+- Track action item completion
+- Send reminders for upcoming deadlines
+- Archive completed action items
+- Prepare agenda for next meeting
+
+---
+
+**Effective meeting notes ensure decisions are documented, action items are tracked, and everyone stays aligned on project progress.**

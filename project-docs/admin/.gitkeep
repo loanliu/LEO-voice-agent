@@ -1,0 +1,63 @@
+# Admin Folder
+
+This folder contains administrative documents, contracts, and sensitive business information.
+
+## Contents
+
+This folder is intended for:
+- Legal documents and contracts
+- Vendor agreements and SOWs
+- Team access credentials and permissions documentation
+- Budget tracking and financial documents
+- Compliance and regulatory documentation
+- HR-related team documentation
+- Insurance and liability documents
+- Intellectual property documentation
+
+## Security Notice
+
+IMPORTANT: This folder may contain sensitive business information. 
+
+### Guidelines:
+- Do not commit sensitive documents directly to version control
+- Use secure cloud storage for confidential materials
+- Reference external document locations when appropriate
+- Ensure proper access controls are maintained
+- Follow company data protection policies
+
+### Recommended Structure:
+```
+admin/
+├── contracts/
+│   ├── vendor-agreements/
+│   ├── client-contracts/
+│   └── employment-agreements/
+├── legal/
+│   ├── intellectual-property/
+│   ├── compliance/
+│   └── regulatory/
+├── financial/
+│   ├── budget-tracking/
+│   ├── expense-reports/
+│   └── invoicing/
+├── team/
+│   ├── access-management/
+│   ├── onboarding/
+│   └── policies/
+└── insurance/
+    ├── liability/
+    ├── professional/
+    └── cyber-security/
+```
+
+### External Storage Links
+
+For secure documents, maintain references to external storage:
+- Google Drive: [Company Admin Folder]
+- SharePoint: [Legal Documents]
+- DocuSign: [Contract Management]
+- 1Password: [Team Credentials]
+
+---
+
+**Remember: Keep sensitive information secure and access-controlled.**
