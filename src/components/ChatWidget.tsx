@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 
+/**
+ * ChatWidget Component - NON-FUNCTIONAL (MISSING DEPENDENCY)
+ *
+ * This component attempts to load an external chat-widget.js file from the public
+ * directory, but that file doesn't exist in the repository. This results in a
+ * 404 error and non-functional chat widget.
+ *
+ * The actual working voice functionality is implemented in VoiceDemo.tsx, which
+ * connects directly to Retell AI using their SDK.
+ */
 const ChatWidget: React.FC = () => {
   const [isWidgetLoaded, setIsWidgetLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

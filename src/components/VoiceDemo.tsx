@@ -3,6 +3,18 @@ import { Phone, Mic, MicOff, PhoneOff } from 'lucide-react';
 import { RETELL_CONFIG } from '../config/retell';
 import { RetellWebClient } from 'retell-client-js-sdk';
 
+/**
+ * VoiceDemo Component - THIS IS THE WORKING VOICE WIDGET
+ *
+ * This component provides the functional voice calling interface that connects
+ * directly to Retell AI. It handles the voice demo modal that appears when users
+ * click voice-related buttons throughout the application.
+ *
+ * Note: This is different from ChatWidget.tsx which attempts to load an external
+ * chat-widget.js file that doesn't exist. This VoiceDemo component uses the
+ * Retell SDK directly and is the actual working implementation.
+ */
+
 interface VoiceDemoProps {
   agentId: string;
   agentName?: string;
