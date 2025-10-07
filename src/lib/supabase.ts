@@ -25,6 +25,3 @@ export const supabase = createClient(
     redirectTo: `${window.location.origin}/auth/callback`,
   },
 });
-
-// Export types for TypeScript support
-export type { User, Session, AuthError } from '@supabase/supabase-js';
