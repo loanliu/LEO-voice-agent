@@ -46,11 +46,11 @@ export default async function handler(req, res) {
 
     // 3) Call Cal.com
     // Debug: Check if API key is available
-    const apiKey = process.env.CAL_API_KEY;
+    const apiKey = process.env.CAL_COM_API_KEY;
     if (!apiKey) {
       return res.status(200).json({ 
         ok: false, 
-        error: "CAL_API_KEY environment variable is not set",
+        error: "CAL_COM_API_KEY environment variable is not set",
         debug: "Environment variables: " + JSON.stringify(Object.keys(process.env).filter(k => k.includes('CAL')))
       });
     }
