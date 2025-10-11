@@ -182,17 +182,39 @@ The function returns this JSON structure:
 **Success Response**:
 ```json
 {
-  "ok": true,
-  "status": 201,
-  "bookingUid": "abc123xyz",
-  "bookingId": 12345,
-  "start": "2025-10-12T18:00:00Z",
-  "end": "2025-10-12T19:00:00Z",
-  "duration": 60,
-  "meetingUrl": "https://meet.cal.com/abc123",
-  "attendee": {
-    "name": "John Smith",
-    "email": "john@example.com"
+  "success": true,
+  "message": "Great! I've scheduled your tour for 10/15/2025 at 2:00:00 PM. You'll receive a confirmation email with the meeting link.",
+  
+  "n8n_payload": {
+    "event_type": "booking_created",
+    "booking_id": 11679943,
+    "booking_uid": "dg4pi5ofuATsQXHUZL57Nu",
+    "meeting_url": "https://app.cal.com/video/dg4pi5ofuATsQXHUZL57Nu",
+    "start_time": "2025-10-15T18:00:00.000Z",
+    "end_time": "2025-10-15T18:45:00.000Z",
+    "duration_minutes": 45,
+    "attendee_name": "Test User",
+    "attendee_email": "test@example.com",
+    "host_name": "Loan Liu",
+    "host_email": "loanliu@gmail.com",
+    "event_type_name": "schedule-a-tour",
+    "retell_call_id": "test-123",
+    "created_at": "2025-10-11T19:36:02.940Z"
+  },
+  
+  "raw_data": {
+    "ok": true,
+    "status": 201,
+    "bookingUid": "dg4pi5ofuATsQXHUZL57Nu",
+    "bookingId": 11679943,
+    "start": "2025-10-15T18:00:00.000Z",
+    "end": "2025-10-15T18:45:00.000Z",
+    "duration": 45,
+    "meetingUrl": "https://app.cal.com/video/dg4pi5ofuATsQXHUZL57Nu",
+    "attendee": {
+      "name": "Test User",
+      "email": "test@example.com"
+    }
   }
 }
 ```
@@ -201,10 +223,55 @@ The function returns this JSON structure:
 ```json
 {
   "ok": false,
-  "status": 400,
   "error": "Invalid time slot or booking failed"
 }
 ```
+
+## Integrating with n8n
+
+### Option 1: Direct n8n Webhook (Recommended)
+
+1. **Create an n8n webhook node**:
+   - In your n8n workflow, add a "Webhook" node
+   - Copy the webhook URL (e.g., `https://your-n8n-instance.com/webhook/booking-created`)
+
+2. **Add environment variable**:
+   - In Vercel: Settings → Environment Variables
+   - Add: `N8N_WEBHOOK_URL` = your n8n webhook URL
+
+3. **Use the n8n endpoint**:
+   - After a successful booking, call: `https://your-domain.vercel.app/api/send-to-n8n`
+   - Send the `n8n_payload` data from your booking response
+
+### Option 2: Extract from Retell Function Response
+
+In your Retell AI function configuration, you can access the response data:
+
+```javascript
+// In your Retell function response handling
+const bookingResponse = await callRetellFunction('book_with_cal', args);
+
+if (bookingResponse.success) {
+  // Extract data for n8n
+  const n8nData = bookingResponse.n8n_payload;
+  
+  // Send to n8n webhook
+  await fetch('https://your-n8n-instance.com/webhook/booking-created', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(n8nData)
+  });
+}
+```
+
+### n8n Workflow Example
+
+Your n8n workflow can:
+1. **Receive** the booking data from the webhook
+2. **Send** confirmation emails
+3. **Update** your CRM database
+4. **Create** calendar events
+5. **Notify** your team via Slack/email
 
 ## Testing Your Function
 

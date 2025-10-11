@@ -92,8 +92,35 @@ export default async function handler(req, res) {
       raw: data
     };
 
-    // 5) Return compact JSON (Retell will stuff this into the LLM context & call_analyzed)
-    return res.json(result);
+    // 5) Return formatted JSON for Retell and n8n
+    const retellResponse = {
+      // For Retell LLM to understand and speak to user
+      success: true,
+      message: `Great! I've scheduled your tour for ${new Date(data.start).toLocaleDateString()} at ${new Date(data.start).toLocaleTimeString()}. You'll receive a confirmation email with the meeting link.`,
+      
+      // For n8n webhook payload
+      n8n_payload: {
+        event_type: "booking_created",
+        booking_id: data.id,
+        booking_uid: data.uid,
+        meeting_url: data.meetingUrl || data.location,
+        start_time: data.start,
+        end_time: data.end,
+        duration_minutes: data.duration,
+        attendee_name: data.attendees?.[0]?.name,
+        attendee_email: data.attendees?.[0]?.email,
+        host_name: data.hosts?.[0]?.name,
+        host_email: data.hosts?.[0]?.email,
+        event_type_name: data.eventType?.slug,
+        retell_call_id: call?.call_id,
+        created_at: new Date().toISOString()
+      },
+      
+      // Original data for debugging
+      raw_data: result
+    };
+
+    return res.json(retellResponse);
 
   } catch (err) {
     return res.status(200).json({ ok: false, error: String(err) });
