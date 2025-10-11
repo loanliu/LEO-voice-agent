@@ -182,27 +182,22 @@ The function returns this JSON structure:
 **Success Response**:
 ```json
 {
-  "success": true,
+  "ok": true,
+  "status": 201,
+  "booking_id": 11679943,
+  "booking_uid": "dg4pi5ofuATsQXHUZL57Nu",
+  "meeting_url": "https://app.cal.com/video/dg4pi5ofuATsQXHUZL57Nu",
+  "start_time": "2025-10-15T18:00:00.000Z",
+  "end_time": "2025-10-15T18:45:00.000Z",
+  "duration_minutes": 45,
+  "attendee_name": "Test User",
+  "attendee_email": "test@example.com",
+  "host_name": "Loan Liu",
+  "host_email": "loanliu@gmail.com",
+  "event_type_name": "schedule-a-tour",
+  "event_type_id": 2922364,
   "message": "Great! I've scheduled your tour for 10/15/2025 at 2:00:00 PM. You'll receive a confirmation email with the meeting link.",
-  
-  "n8n_payload": {
-    "event_type": "booking_created",
-    "booking_id": 11679943,
-    "booking_uid": "dg4pi5ofuATsQXHUZL57Nu",
-    "meeting_url": "https://app.cal.com/video/dg4pi5ofuATsQXHUZL57Nu",
-    "start_time": "2025-10-15T18:00:00.000Z",
-    "end_time": "2025-10-15T18:45:00.000Z",
-    "duration_minutes": 45,
-    "attendee_name": "Test User",
-    "attendee_email": "test@example.com",
-    "host_name": "Loan Liu",
-    "host_email": "loanliu@gmail.com",
-    "event_type_name": "schedule-a-tour",
-    "retell_call_id": "test-123",
-    "created_at": "2025-10-11T19:36:02.940Z"
-  },
-  
-  "raw_data": {
+  "raw": {
     "ok": true,
     "status": 201,
     "bookingUid": "dg4pi5ofuATsQXHUZL57Nu",
@@ -227,50 +222,61 @@ The function returns this JSON structure:
 }
 ```
 
-## Integrating with n8n
+## Integrating with n8n via call_analyzed
 
-### Option 1: Direct n8n Webhook (Recommended)
+### How it Works:
+1. **Retell calls** your `book_with_cal` function
+2. **Function returns** booking data in the response
+3. **Retell sends** all function responses to your `call_analyzed` webhook
+4. **n8n receives** the booking data automatically
 
-1. **Create an n8n webhook node**:
-   - In your n8n workflow, add a "Webhook" node
-   - Copy the webhook URL (e.g., `https://your-n8n-instance.com/webhook/booking-created`)
+### Setting up call_analyzed Webhook in Retell:
+1. Go to your Retell AI agent settings
+2. Navigate to **Webhooks** → **call_analyzed**
+3. Set your n8n webhook URL (e.g., `https://your-n8n-instance.com/webhook/retell-call-analyzed`)
+4. Enable the webhook
 
-2. **Add environment variable**:
-   - In Vercel: Settings → Environment Variables
-   - Add: `N8N_WEBHOOK_URL` = your n8n webhook URL
+### What n8n Receives:
+When a booking is made, your n8n webhook will receive the complete call data including:
 
-3. **Use the n8n endpoint**:
-   - After a successful booking, call: `https://your-domain.vercel.app/api/send-to-n8n`
-   - Send the `n8n_payload` data from your booking response
-
-### Option 2: Extract from Retell Function Response
-
-In your Retell AI function configuration, you can access the response data:
-
-```javascript
-// In your Retell function response handling
-const bookingResponse = await callRetellFunction('book_with_cal', args);
-
-if (bookingResponse.success) {
-  // Extract data for n8n
-  const n8nData = bookingResponse.n8n_payload;
-  
-  // Send to n8n webhook
-  await fetch('https://your-n8n-instance.com/webhook/booking-created', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(n8nData)
-  });
+```json
+{
+  "call_id": "abc123...",
+  "agent_id": "your-agent-id",
+  "function_calls": [
+    {
+      "function_name": "book_with_cal",
+      "function_response": {
+        "ok": true,
+        "booking_id": 11680318,
+        "booking_uid": "gjm7NVbj8SddVpg3y5g5qr",
+        "meeting_url": "https://app.cal.com/video/gjm7NVbj8SddVpg3y5g5qr",
+        "start_time": "2025-10-16T19:00:00.000Z",
+        "end_time": "2025-10-16T19:45:00.000Z",
+        "duration_minutes": 45,
+        "attendee_name": "Demo User",
+        "attendee_email": "demo@example.com",
+        "host_name": "Loan Liu",
+        "host_email": "loanliu@gmail.com",
+        "event_type_name": "schedule-a-tour",
+        "event_type_id": 2922364,
+        "message": "Great! I've scheduled your tour..."
+      }
+    }
+  ],
+  "call_analyzed": {
+    "summary": "User booked a tour for tomorrow",
+    "next_steps": "Send confirmation email"
+  }
 }
 ```
 
-### n8n Workflow Example
-
+### n8n Workflow Example:
 Your n8n workflow can:
-1. **Receive** the booking data from the webhook
-2. **Send** confirmation emails
-3. **Update** your CRM database
-4. **Create** calendar events
+1. **Filter** for `book_with_cal` function calls
+2. **Extract** booking data from `function_response`
+3. **Send** confirmation emails
+4. **Update** your CRM database
 5. **Notify** your team via Slack/email
 
 ## Testing Your Function
