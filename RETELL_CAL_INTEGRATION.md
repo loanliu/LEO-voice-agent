@@ -1,5 +1,96 @@
 # Retell + Cal.com Integration Guide
 
+## Quick Setup Summary
+
+This guide shows you how to create a custom function in Retell AI that automatically books Cal.com appointments during voice conversations.
+
+### What You'll Build:
+- ✅ Voice agent that understands appointment requests
+- ✅ Automatic Cal.com booking creation
+- ✅ Data flows to n8n via call_analyzed webhook
+- ✅ Real-time appointment confirmations
+
+## Complete Setup Checklist
+
+### 1. Create Cal.com API Key
+- [ ] Go to https://app.cal.com/settings/developer/api-keys
+- [ ] Create new API key (starts with `cal_live_...`)
+- [ ] Copy the full API key
+- [ ] Note your event type ID (e.g., 2922364 for "Schedule a tour")
+
+### 2. Deploy Serverless Function to Vercel
+- [ ] Push code to GitHub repository
+- [ ] Go to https://vercel.com/new
+- [ ] Import your GitHub repository
+- [ ] Deploy (Vercel auto-detects Vite project)
+- [ ] Note your function URL: `https://your-project.vercel.app/api/book-with-cal`
+
+### 3. Configure Retell AI Custom Function
+- [ ] Go to Retell AI dashboard
+- [ ] Create new Custom Function
+- [ ] **Function Name**: `book_with_cal`
+- [ ] **Endpoint URL**: `https://your-project.vercel.app/api/book-with-cal`
+- [ ] **Parameters Schema**: 
+```json
+{
+  "type": "object",
+  "properties": {
+    "eventTypeId": {
+      "type": "number",
+      "description": "Cal.com event type ID (e.g., 2922364 for 'Schedule a tour')"
+    },
+    "attendee": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string", "description": "Full name of the person booking"},
+        "email": {"type": "string", "description": "Email address"},
+        "timeZone": {"type": "string", "description": "IANA timezone (e.g., 'America/Los_Angeles')"}
+      },
+      "required": ["name", "email"]
+    },
+    "startIsoUtc": {
+      "type": "string",
+      "description": "Appointment start time in UTC ISO format (e.g., '2025-10-12T18:00:00Z')"
+    }
+  },
+  "required": ["eventTypeId", "attendee", "startIsoUtc"]
+}
+```
+- [ ] Enable function in your agent
+
+### 4. Set Up call_analyzed Webhook (for n8n)
+- [ ] In Retell AI: Webhooks → call_analyzed
+- [ ] Set your n8n webhook URL
+- [ ] Enable webhook
+
+### 5. Train Your Agent
+- [ ] Update agent prompt to use `book_with_cal` function
+- [ ] Add conversation examples for booking scenarios
+
+**Example Agent Prompt Addition:**
+```
+When a user wants to schedule a tour or appointment:
+
+1. Ask for their name and email
+2. Ask for their preferred date and time
+3. Use the book_with_cal function with these parameters:
+   - eventTypeId: 2922364 (for "Schedule a tour")
+   - attendee: {name: "User Name", email: "user@email.com", timeZone: "America/Los_Angeles"}
+   - startIsoUtc: "2025-10-15T18:00:00Z" (convert their preferred time to UTC)
+
+4. Confirm the booking with the meeting link
+```
+
+**Example Conversation:**
+```
+User: "I'd like to schedule a tour"
+Agent: "I'd be happy to help you schedule a tour! What's your name and email address?"
+User: "John Smith, john@example.com"
+Agent: "Perfect! What date and time works best for you?"
+User: "Tomorrow at 2 PM"
+Agent: [Calls book_with_cal function] "Great! I've scheduled your tour for tomorrow at 2 PM. You'll receive a confirmation email at john@example.com with the meeting link."
+```
+
 ## Overview
 This document explains the Vercel serverless function that integrates Retell AI with Cal.com for automated appointment booking through voice conversations.
 
@@ -369,9 +460,46 @@ If you need help:
 3. Test the function directly with curl/Postman before connecting to Retell
 4. Review Retell AI's custom function logs
 
+## Troubleshooting
+
+### Function Returns 404 Error
+- ✅ Check Vercel root directory is set to `.` (not `landing-page`)
+- ✅ Verify `api/book-with-cal.js` exists in your repository
+- ✅ Redeploy your Vercel project
+
+### Function Returns "Invalid Access Token"
+- ✅ Verify your Cal.com API key is correct
+- ✅ Check the API key is active in Cal.com dashboard
+- ✅ Ensure your Cal.com account has pro features enabled
+
+### Function Returns "User with username not found"
+- ✅ Use `eventTypeId` instead of `username` + `eventTypeSlug`
+- ✅ Get your event type ID from Cal.com dashboard
+- ✅ Use the exact event type ID (e.g., 2922364)
+
+### Function Returns "User already has booking"
+- ✅ Try a different time slot
+- ✅ Check if the time slot is actually available
+- ✅ Use future dates for testing
+
+### n8n Not Receiving Data
+- ✅ Verify call_analyzed webhook is enabled in Retell
+- ✅ Check your n8n webhook URL is correct
+- ✅ Look for `function_name: "book_with_cal"` in the webhook payload
+- ✅ Extract data from `function_response` object
+
+## Your Working URLs
+
+- **Function Endpoint**: `https://leo-voice-agent-iw69.vercel.app/api/book-with-cal`
+- **GitHub Repository**: `https://github.com/loanliu/LEO-voice-agent`
+- **Event Type ID**: 2922364 ("Schedule a tour")
+- **Function Name in Retell**: `book_with_cal`
+
 ## Changelog
 
 - **2025-10-11**: Initial setup of Vercel serverless function for Retell + Cal.com integration
+- **2025-10-11**: Added comprehensive setup checklist and troubleshooting guide
 - Connected to GitHub repository: `loanliu/LEO-voice-agent`
 - Deployed serverless function at `api/book-with-cal.js`
+- Successfully tested with event type ID 2922364
 
