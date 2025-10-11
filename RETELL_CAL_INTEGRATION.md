@@ -123,7 +123,7 @@ https://your-project-name.vercel.app/api/book-with-cal
   "properties": {
     "eventTypeId": {
       "type": "number",
-      "description": "Cal.com event type ID"
+      "description": "Cal.com event type ID (e.g., 2922364 for 'Schedule a tour')"
     },
     "eventTypeSlug": {
       "type": "string",
@@ -218,14 +218,13 @@ curl -X POST https://your-project-name.vercel.app/api/book-with-cal \
       "call_id": "test-123"
     },
     "args": {
-      "eventTypeId": 123456,
+      "eventTypeId": 2922364,
       "attendee": {
         "name": "Test User",
         "email": "test@example.com",
         "timeZone": "America/Los_Angeles"
       },
-      "startIsoUtc": "2025-10-15T18:00:00Z",
-      "lengthInMinutes": 30
+      "startIsoUtc": "2025-10-15T18:00:00Z"
     }
   }'
 ```
