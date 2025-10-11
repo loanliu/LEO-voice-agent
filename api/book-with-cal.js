@@ -45,10 +45,20 @@ export default async function handler(req, res) {
     Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
 
     // 3) Call Cal.com
+    // Debug: Check if API key is available
+    const apiKey = process.env.CAL_API_KEY;
+    if (!apiKey) {
+      return res.status(200).json({ 
+        ok: false, 
+        error: "CAL_API_KEY environment variable is not set",
+        debug: "Environment variables: " + JSON.stringify(Object.keys(process.env).filter(k => k.includes('CAL')))
+      });
+    }
+    
     const resp = await fetch("https://api.cal.com/v2/bookings", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.CAL_API_KEY}`,
+        "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
         "cal-api-version": "2024-08-13"
       },
