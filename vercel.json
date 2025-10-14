@@ -5,19 +5,12 @@
     }
   },
   "routes": [
-    // Health first
     { "src": "/api/health", "dest": "/api/health" },
-
-    // Maintenance page
     { "src": "/maintenance", "dest": "/api/maintenance" },
-
-    // Static/public bypasses
     { "src": "/_next/.*", "dest": "/_next/$1" },
     { "src": "/favicon.ico", "dest": "/favicon.ico" },
     { "src": "/images/(.*)", "dest": "/images/$1" },
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
-
-    // Global maintenance guard (must be after bypass routes)
     { "src": "/(.*)", "dest": "/api/_maintenance-guard" }
   ]
 }
