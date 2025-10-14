@@ -1,6 +1,6 @@
 LEO
 
-<!-- Maintenance mode enabled -->
+<!-- Maintenance mode enabled - routing updated -->
 ## Maintenance Mode
 
 Add a global maintenance mode with an env flag so you can safely take the site offline while still allowing health checks and an admin bypass.
