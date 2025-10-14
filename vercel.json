@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/**/*": {
-      "runtime": "@vercel/edge"
-    }
-  },
   "routes": [
     { "src": "/api/health", "dest": "/api/health" },
     { "src": "/maintenance", "dest": "/api/maintenance" },
